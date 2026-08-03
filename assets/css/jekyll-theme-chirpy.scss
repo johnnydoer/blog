@@ -3,7 +3,7 @@
 
 @use 'abstracts/variables' with (
   $theme: '{{ site.theme_mode }}',
-  $font-family-base: ('JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace),
+  $font-family-base: ('Source Serif 4', 'Source Serif Pro', Georgia, 'Times New Roman', serif),
   $font-family-heading: ('JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace)
 );
 
@@ -14,11 +14,150 @@
 {%- endif -%}
 ';
 
-/* append your custom style below */
+/* ------------------------------------------------------------------
+ * Custom styles
+ * ------------------------------------------------------------------ */
 
 :root {
-  --bs-font-monospace: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  --bs-body-line-height: 1.75;
+
+  /* Light palette — muted indigo on warm off-white */
+  --main-bg: #faf8f5;
+  --mask-bg: #d5d2cb;
+  --main-border-color: #ece9e2;
+  --text-color: #2c2b30;
+  --text-muted-color: #6f6d78;
+  --heading-color: #232227;
+  --label-color: #4f4d58;
+  --blockquote-border-color: #e8e4dc;
+  --link-color: #6d6d9e;
+  --link-underline-color: #d8d5ee;
+  --button-bg: #fffdfa;
+  --btn-border-color: #e6e2d9;
+  --btn-backtotop-color: #8a8796;
+  --btn-backtotop-border-color: #eeeae1;
+  --checkbox-checked-color: #6d6d9e;
+  --menu-bg: #fffdfa;
+  --menu-border-color: #f0ede6;
+  --menu-active-color: #45435c;
+  --menu-highlight-bg: #efedf6;
+  --site-title-color: #5c5a72;
+  --site-subtitle-color: #6f6d78;
+  --sidebar-bg: #f4f1ea;
+  --sidebar-border-color: #e9e5db;
+  --sidebar-muted-color: #55535f;
+  --sidebar-active-color: #232227;
+  --sidebar-hover-bg: #e5e2f0;
+  --sidebar-btn-bg: #fffdfa;
+  --sidebar-btn-color: #8a8796;
+  --topbar-bg: rgb(250 248 245 / 70%);
+  --topbar-text-color: #3d3b46;
+  --search-border-color: #efece5;
+  --search-icon-color: #b9b5c6;
+  --input-focus-border-color: #a9a6bc;
+  --post-list-text-color: #4a4854;
+  --btn-patinator-text-color: #514f5c;
+  --toc-highlight: #6d6d9e;
+  --btn-share-color: #8a8796;
+  --btn-share-hover-color: #6d6d9e;
+  --card-bg: #fffdfa;
+  --card-hover-bg: #efedf6;
+  --card-shadow:
+    rgb(80 76 110 / 6%) 0 2px 6px 0, rgb(150 144 170 / 12%) 0 0 0 1px;
+  --tb-odd-bg: #fbf9f4;
+  --tb-border-color: #ece8de;
+  --kbd-wrap-color: #b3b0bd;
+  --kbd-bg-color: #fffdfa;
+  --prompt-info-bg: #e7e3f6;
+  --prompt-info-icon-color: #6d6d9e;
+  --tag-border: #ddd9ee;
+  --tag-hover: #e5e2f0;
+  --search-tag-bg: #f4f1ea;
+  --categories-hover-bg: #ece8de;
+  --categories-icon-hover-color: #6d6d9e;
+  --timeline-color: rgb(80 76 110 / 12%);
+  --timeline-node-bg: #b9b5c6;
+  --highlight-bg-color: #f6f4ef;
+  --highlighter-rouge-color: #4a5a6b;
+  --inline-code-bg: rgb(109 109 158 / 8%);
+  --code-color: #3a3942;
+  --code-header-text-color: #9a97a5;
+  --code-header-muted-color: #e7e3dc;
 }
+
+::selection {
+  background: rgb(109 109 158 / 25%);
+}
+
+[data-bs-theme='dark'] {
+  /* Dark palette — soft charcoal with brighter indigo */
+  --main-bg: #191a1e;
+  --mask-bg: #3d3e46;
+  --main-border-color: #2a2b32;
+  --text-color: #e3e2e6;
+  --text-muted-color: #9b99a6;
+  --heading-color: #f0eff3;
+  --label-color: #b9b7c2;
+  --blockquote-border-color: #2e2f37;
+  --link-color: #a5a5d8;
+  --link-underline-color: #4a4a6b;
+  --button-bg: #23242b;
+  --btn-border-color: #33343d;
+  --btn-backtotop-color: #9b99a6;
+  --btn-backtotop-border-color: #2c2d35;
+  --checkbox-checked-color: #a5a5d8;
+  --menu-bg: #1f2026;
+  --menu-border-color: #2a2b32;
+  --menu-active-color: #c3c2cf;
+  --menu-highlight-bg: #2a2b38;
+  --site-title-color: #b5b3c4;
+  --site-subtitle-color: #9b99a6;
+  --sidebar-bg: #1e1f25;
+  --sidebar-border-color: #292a31;
+  --sidebar-muted-color: #b1afbc;
+  --sidebar-active-color: #f0eff3;
+  --sidebar-hover-bg: #2a2b38;
+  --sidebar-btn-bg: #23242b;
+  --sidebar-btn-color: #8b8998;
+  --topbar-bg: rgb(25 26 30 / 70%);
+  --topbar-text-color: #cfced6;
+  --search-border-color: #2e2f37;
+  --search-icon-color: #565763;
+  --input-focus-border-color: #6f6e84;
+  --toc-highlight: #a5a5d8;
+  --btn-share-color: #9b99a6;
+  --btn-share-hover-color: #a5a5d8;
+  --card-bg: #1f2026;
+  --card-hover-bg: #2b2c36;
+  --card-shadow:
+    rgb(0 0 0 / 30%) 0 2px 6px 0, rgb(150 148 180 / 8%) 0 0 0 1px;
+  --tb-odd-bg: #202128;
+  --tb-border-color: #2c2d35;
+  --kbd-wrap-color: #5b5b6b;
+  --kbd-bg-color: #23242b;
+  --prompt-info-bg: #26273a;
+  --prompt-info-icon-color: #a5a5d8;
+  --tag-border: #3b3c52;
+  --tag-hover: #2b2c38;
+  --search-tag-bg: #23242b;
+  --categories-border: rgb(200 198 220 / 12%);
+  --categories-hover-bg: #2c2d35;
+  --categories-icon-hover-color: #a5a5d8;
+  --timeline-color: rgb(200 198 220 / 10%);
+  --timeline-node-bg: #565763;
+  --highlight-bg-color: #15161a;
+  --highlighter-rouge-color: #9fb0c0;
+  --inline-code-bg: rgb(165 165 216 / 12%);
+  --code-color: #d6d4de;
+  --code-header-text-color: #8b8998;
+  --code-header-muted-color: #3d3e46;
+
+  ::selection {
+    background: rgb(165 165 216 / 30%);
+  }
+}
+
+/* JetBrains Mono for elements where the theme hardcodes Lato/Oswald */
 
 code,
 kbd,
@@ -27,4 +166,31 @@ pre,
 .pagination,
 #archives .date.day {
   font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+}
+
+/* Homepage hero */
+
+.home-hero {
+  margin: 1.5rem 0 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--main-border-color);
+}
+
+.home-hero-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--heading-color);
+  margin-bottom: 0.35rem;
+}
+
+.home-hero-tagline {
+  color: var(--text-muted-color);
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+}
+
+.home-hero-blurb {
+  color: var(--label-color);
+  margin-bottom: 0;
 }
