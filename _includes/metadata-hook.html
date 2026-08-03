@@ -1,14 +1,14 @@
 <!--
   Site-wide head hooks.
   Interactive Mermaid: pan/zoom, fullscreen lightbox, PNG/SVG export.
-  Loaded only on pages with diagrams.
+  Chirpy renders the diagrams itself; this adds pan/zoom + controls on top.
 -->
 {% if page.mermaid %}
   <link rel="stylesheet" href="https://unpkg.com/@mostlylucid/mermaid-enhancements@1.0.0/src/styles.css">
   <script type="module">
     (async () => {
       const lib = await import(
-        'https://unpkg.com/@mostlylucid/mermaid-enhancements@1.0.0/dist/index.min.js'
+        'https://unpkg.com/@mostlylucid/mermaid-enhancements@1.0.0/dist/index.bundle.min.js'
       );
 
       lib.configure({
@@ -33,11 +33,16 @@
       const enhance = () =>
         whenRendered(() => {
           lib.cleanupMermaidEnhancements?.();
-          lib.initMermaid();
+          lib.enhanceMermaidDiagrams();
         });
 
       // Chirpy re-renders diagrams on theme toggle; re-attach pan/zoom after.
-      const observer = new MutationObserver(enhance);
+      // Multiple passes keep pan/zoom on the final SVG (re-render is async).
+      const observer = new MutationObserver(() => {
+        enhance();
+        setTimeout(enhance, 600);
+        setTimeout(enhance, 1800);
+      });
       observer.observe(document.documentElement, {
         attributes: true,
         attributeFilter: ['data-bs-theme']
