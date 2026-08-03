@@ -1,0 +1,14 @@
+name: chirpy-blog
+
+services:
+  jekyll:
+    image: mcr.microsoft.com/devcontainers/jekyll:2-bullseye
+    container_name: chirpy-jekyll
+    ports:
+      - "4000:4000"
+    volumes:
+      - .:/srv/jekyll
+    working_dir: /srv/jekyll
+    command: >
+      bash -lc "bundle install && bundle exec jekyll serve --host 0.0.0.0 --port 4000 --livereload --force_polling"
+    init: true
