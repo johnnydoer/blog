@@ -1,0 +1,53 @@
+<!--
+  Site-wide head hooks.
+  Interactive Mermaid: pan/zoom, fullscreen lightbox, PNG/SVG export.
+  Loaded only on pages with diagrams.
+-->
+{% if page.mermaid %}
+  <link rel="stylesheet" href="https://unpkg.com/@mostlylucid/mermaid-enhancements@1.0.0/src/styles.css">
+  <script type="module">
+    (async () => {
+      const lib = await import(
+        'https://unpkg.com/@mostlylucid/mermaid-enhancements@1.0.0/dist/index.min.js'
+      );
+
+      lib.configure({
+        icons: {
+          fullscreen: 'fas fa-expand',
+          zoomIn: 'fas fa-plus',
+          zoomOut: 'fas fa-minus',
+          reset: 'fas fa-rotate-left',
+          exportPng: 'fas fa-download',
+          exportSvg: 'fas fa-code'
+        }
+      });
+
+      const whenRendered = (cb, tries = 60) => {
+        if (document.querySelector('.mermaid svg')) {
+          cb();
+        } else if (tries > 0) {
+          setTimeout(() => whenRendered(cb, tries - 1), 250);
+        }
+      };
+
+      const enhance = () =>
+        whenRendered(() => {
+          lib.cleanupMermaidEnhancements?.();
+          lib.initMermaid();
+        });
+
+      // Chirpy re-renders diagrams on theme toggle; re-attach pan/zoom after.
+      const observer = new MutationObserver(enhance);
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-bs-theme']
+      });
+
+      if (document.readyState === 'loading') {
+        window.addEventListener('DOMContentLoaded', enhance);
+      } else {
+        enhance();
+      }
+    })();
+  </script>
+{% endif %}
