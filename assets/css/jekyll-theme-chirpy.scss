@@ -176,6 +176,12 @@ pre,
   border-bottom: 1px solid var(--main-border-color);
 }
 
+/* Callout boxes: {: .prompt-tip }, {: .prompt-info }, {: .prompt-warning }, {: .prompt-danger } */
+
+.prompt {
+  border-radius: 0.5rem;
+}
+
 .home-hero-title {
   font-family: 'JetBrains Mono', monospace;
   font-size: 2rem;
