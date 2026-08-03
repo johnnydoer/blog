@@ -36,8 +36,6 @@
           lib.enhanceMermaidDiagrams();
         });
 
-      // Chirpy re-renders diagrams on theme toggle; re-attach pan/zoom after.
-      // Multiple passes keep pan/zoom on the final SVG (re-render is async).
       const observer = new MutationObserver(() => {
         enhance();
         setTimeout(enhance, 600);
