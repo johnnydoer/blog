@@ -1,0 +1,19 @@
+---
+---
+
+@use 'abstracts/variables' with (
+  $theme: '{{ site.theme_mode }}',
+  $font-family-base: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Consolas,
+    'Liberation Mono', Menlo, monospace,
+  $font-family-heading: 'JetBrains Mono', ui-monospace, 'SFMono-Regular',
+    Consolas, 'Liberation Mono', Menlo, monospace
+);
+
+/* prettier-ignore */
+@use 'main
+{%- if jekyll.environment == 'production' -%}
+  .bundle
+{%- endif -%}
+';
+
+/* append your custom style below */

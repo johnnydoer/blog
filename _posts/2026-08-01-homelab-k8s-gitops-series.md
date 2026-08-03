@@ -4,6 +4,7 @@ date: 2026-08-01
 categories: [Homelab, Kubernetes]
 tags: [k3s, argocd, cilium, gitops, homelab, kubernetes]
 description: "A complete homelab kubernetes gitops architecture walkthrough: OpenTofu, Proxmox, Ansible, K3s, Cilium, ArgoCD, GitLab CE, cert-manager, Longhorn, OpenBao, ESO, and kube-prometheus-stack."
+mermaid: true
 toc: true
 ---
 
