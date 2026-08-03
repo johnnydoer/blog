@@ -15,3 +15,16 @@
 ';
 
 /* append your custom style below */
+
+:root {
+  --bs-font-monospace: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+}
+
+code,
+kbd,
+pre,
+.tag span,
+.pagination,
+#archives .date.day {
+  font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+}
