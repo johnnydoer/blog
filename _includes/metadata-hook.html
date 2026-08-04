@@ -22,6 +22,27 @@
         }
       });
 
+      const monoFont =
+        "JetBrains Mono, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace";
+
+      const rerenderWithMono = async () => {
+        if (!window.mermaid) return false;
+        try {
+          mermaid.initialize({ fontFamily: monoFont, fontSize: 14 });
+          const code = document.querySelector('code.language-mermaid');
+          if (code) {
+            for (const pre of document.querySelectorAll('pre.mermaid')) {
+              pre.textContent = code.textContent;
+              pre.removeAttribute('data-processed');
+            }
+          }
+          await mermaid.init(null, '.mermaid');
+          return document.querySelector('.mermaid svg') !== null;
+        } catch (err) {
+          return false;
+        }
+      };
+
       const whenRendered = (cb, tries = 60) => {
         if (document.querySelector('.mermaid svg')) {
           cb();
@@ -47,9 +68,11 @@
       });
 
       if (document.readyState === 'loading') {
-        window.addEventListener('DOMContentLoaded', enhance);
+        window.addEventListener('DOMContentLoaded', () => {
+          rerenderWithMono().then(enhance);
+        });
       } else {
-        enhance();
+        rerenderWithMono().then(enhance);
       }
     })();
   </script>
