@@ -86,7 +86,6 @@ Here's every layer, what it does, and why it's there.
 ## Architecture Diagram
 
 ```mermaid
-%%{init: {"flowchart": {"nodeSpacing": 25, "rankSpacing": 35}}}%%
 %% Homelab K8s GitOps full-stack architecture: provisioning, infra, and GitOps-managed cluster services
 flowchart TD
     subgraph "Provisioning"
@@ -95,24 +94,24 @@ flowchart TD
     end
 
     subgraph "Infrastructure"
-        PVE["Proxmox\nPVE2 · PVE3 · PVE4"]
-        GL["GitLab CE\ngit · CI · registry · OIDC"]
+        PVE("Proxmox\nPVE2 · PVE3 · PVE4")
+        GL("GitLab CE\ngit · registry · OIDC")
     end
 
     subgraph K8S["K8s Cluster — K3s"]
         NODES["Nodes\nbare-metal CP + 3 Proxmox workers"]
 
         subgraph "Networking"
-            CIL["Cilium\nCNI · kube-proxy replacement\nGateway API · Hubble"]
+            CIL{{"Cilium\nCNI · Gateway API · Hubble"}}
         end
 
         subgraph "GitOps"
             ARGO["ArgoCD\nApp of Apps"]
-            AIU["ArgoCD Image Updater"]
+            AIU>"ArgoCD Image Updater"]
         end
 
         subgraph "TLS"
-            CM["cert-manager\nLet's Encrypt · Cloudflare dns01"]
+            CM["cert-manager\nLet's Encrypt · Cloudflare"]
         end
 
         subgraph "Secrets"
@@ -121,17 +120,17 @@ flowchart TD
         end
 
         subgraph "Storage"
-            LH["Longhorn\nreplicated block"]
-            NFS["NFS CSI\nOMV NAS"]
+            LH[("Longhorn\nreplicated block")]
+            NFS[("NFS CSI\nOMV NAS")]
         end
 
         subgraph "Observability"
-            KPS["kube-prometheus-stack\nPrometheus · Grafana · Alertmanager"]
+            KPS["kube-prometheus-stack\nPrometheus · Grafana"]
         end
 
         subgraph "CI/CD"
             GLR["GitLab Runner\nshell + kubernetes"]
-            KAN["Kaniko\nrootless builds"]
+            KAN>"Kaniko\nrootless builds"]
         end
     end
 
@@ -140,7 +139,7 @@ flowchart TD
     ANS -->|"installs"| GL
     ANS -->|"bootstraps K3s"| NODES
     PVE -->|"worker VMs"| NODES
-    GL -->|"git source"| ARGO
+    GL ==>|"git source"| ARGO
     ARGO -->|"syncs"| CIL
     ARGO -->|"syncs"| CM
     ARGO -->|"syncs"| OB
@@ -157,6 +156,39 @@ flowchart TD
     GLR -->|"builds via"| KAN
     KAN -->|"pushes image"| GL
     AIU -->|"commits tag"| GL
+
+    classDef provisioning  fill:#1e293b,stroke:#38bdf8,color:#f8fafc,stroke-width:2px
+    classDef infra         fill:#0f172a,stroke:#818cf8,color:#f8fafc,stroke-width:2px
+    classDef nodes         fill:#334155,stroke:#cbd5e1,color:#f8fafc,stroke-width:2px
+    classDef networking    fill:#042f2e,stroke:#2dd4bf,color:#f8fafc,stroke-width:2px
+    classDef gitops        fill:#3b0764,stroke:#c084fc,color:#f8fafc,stroke-width:2px
+    classDef tls           fill:#022c22,stroke:#4ade80,color:#f8fafc,stroke-width:2px
+    classDef secrets       fill:#450a0a,stroke:#f87171,color:#f8fafc,stroke-width:2px
+    classDef storage       fill:#422006,stroke:#fbbf24,color:#f8fafc,stroke-width:2px
+    classDef observability fill:#082f49,stroke:#38bdf8,color:#f8fafc,stroke-width:2px
+    classDef cicd          fill:#14532d,stroke:#86efac,color:#f8fafc,stroke-width:2px
+
+    class OT,ANS provisioning
+    class PVE,GL infra
+    class NODES nodes
+    class CIL networking
+    class ARGO,AIU gitops
+    class CM tls
+    class OB,ESO secrets
+    class LH,NFS storage
+    class KPS observability
+    class GLR,KAN cicd
+
+    %% 0-4: provisioning flows (OT/ANS/PVE → infra/nodes)
+    linkStyle 0,1,2,3,4 stroke:#fb923c,stroke-width:2px
+    %% 5: git source (GL ⟹ ARGO) — primary control flow, thick
+    linkStyle 5 stroke:#c084fc,stroke-width:4px
+    %% 6-14: ArgoCD syncs (ARGO → all components)
+    linkStyle 6,7,8,9,10,11,12,13,14 stroke:#c084fc,stroke-width:2px,stroke-dasharray:6
+    %% 15-18: secrets flow (OB/ESO → consumers)
+    linkStyle 15,16,17,18 stroke:#f87171,stroke-width:2px
+    %% 19-21: CI/CD pipeline (GLR → KAN → GL, AIU → GL)
+    linkStyle 19,20,21 stroke:#4ade80,stroke-width:2.5px
 ```
 
 ## Proxmox Topology Gotcha
