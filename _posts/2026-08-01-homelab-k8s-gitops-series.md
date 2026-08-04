@@ -102,7 +102,7 @@ flowchart TD
         NODES["Nodes\nbare-metal CP + 3 Proxmox workers"]
 
         subgraph "Networking"
-            CIL{{"Cilium\nCNI · Gateway API · Hubble"}}
+            CIL(("Cilium\nCNI · Gateway API · Hubble"))
         end
 
         subgraph "GitOps"
