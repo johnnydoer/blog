@@ -213,7 +213,7 @@ provider "proxmox" {
 }
 ```
 
-If you have a clustered Proxmox setup, you can skip the multi-provider configuration. One provider block and one token work across all nodes. I'll note this distinction again in Post #1.
+If you have a clustered Proxmox setup, you can skip the multi-provider configuration. One provider block and one token work across all nodes. I'll note this distinction again in Post #1. The full walkthrough — provider aliases, GitLab HTTP backend, cloud-init SSH injection — is in [Proxmox VM Provisioning with OpenTofu](/posts/proxmox-opentofu-vm-provisioning/).
 
 ## Series Roadmap
 
