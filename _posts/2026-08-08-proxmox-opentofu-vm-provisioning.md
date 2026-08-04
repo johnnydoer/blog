@@ -8,6 +8,7 @@ image:
   path: /assets/img/posts/proxmox-opentofu-vm-provisioning/hero.png
   alt: "OpenTofu CLI provisioning Proxmox VMs across three standalone nodes using provider aliases"
 toc: true
+mermaid: true
 ---
 
 > This post is part of the [Homelab K8s GitOps series](/categories/homelab/). Start with the [architecture overview](/posts/homelab-k8s-gitops-series/) or jump in anywhere.
