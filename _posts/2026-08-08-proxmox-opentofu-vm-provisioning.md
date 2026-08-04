@@ -320,4 +320,4 @@ Four VMs provisioned across three standalone Proxmox nodes, all from code, with 
 
 ## What's Next
 
-Next up: bootstrapping the K3s cluster with Ansible — server config, worker join, Cilium CNI, and the passwordless sudo gotcha that causes a misleading token error. [Post #2: K3s Cluster Bootstrap with Ansible](/posts/k3s-ansible-bootstrap/).
+Next up: bootstrapping the K3s cluster with Ansible — server config, worker join, Cilium CNI, and the passwordless sudo gotcha that causes a misleading token error. [Post #2: K3s Cluster Bootstrap with Ansible](/posts/k3s-ansible-bootstrap-proxmox/).
