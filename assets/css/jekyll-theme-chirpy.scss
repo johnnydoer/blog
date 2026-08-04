@@ -271,14 +271,21 @@ body .mermaid-lightbox-close:hover {
   color: #fff;
 }
 
-/* Mermaid labels: match the site's mono headings instead of the library default */
+/* Mermaid labels: match the site's mono headings instead of the library default.
+   Mermaid injects its own <style> into the SVG, so override with !important. */
 
-.mermaid-wrapper .mermaid,
-.mermaid-lightbox-diagram,
-.mermaid-wrapper .mermaid svg,
-.mermaid-lightbox-diagram svg {
-  font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-  font-size: 14px;
+.mermaid-wrapper .mermaid svg text,
+.mermaid-wrapper .mermaid svg tspan,
+.mermaid-wrapper .mermaid svg p,
+.mermaid-wrapper .mermaid svg span,
+.mermaid-wrapper .mermaid svg .nodeLabel,
+.mermaid-lightbox-diagram svg text,
+.mermaid-lightbox-diagram svg tspan,
+.mermaid-lightbox-diagram svg p,
+.mermaid-lightbox-diagram svg span,
+.mermaid-lightbox-diagram svg .nodeLabel {
+  font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace !important;
+  font-size: 14px !important;
 }
 
 /* Readability: bump body text from 16.48px to 18px for the serif face */
