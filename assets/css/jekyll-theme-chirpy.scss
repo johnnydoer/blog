@@ -322,6 +322,19 @@ body .mermaid-lightbox-close:hover {
   font-size: 14px !important;
 }
 
+/* Close button: the library hardcodes Boxicons classes (bx bx-x) but the
+   icon font is never loaded, so the glyph is invisible. Paint the FA xmark.
+   (Label centering is applied by the hook as inline styles after each render —
+   a CSS rule here would corrupt mermaid's label measurement during render.) */
+
+.mermaid-control-btn.bx-x::before {
+  font-family: 'Font Awesome 7 Free';
+  font-weight: 900;
+  content: '\f00d';
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
 /* Readability: bump body text from 16.48px to 18px for the serif face */
 
 .content p {

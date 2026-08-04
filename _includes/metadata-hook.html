@@ -28,7 +28,15 @@
       const rerenderWithMono = async () => {
         if (!window.mermaid) return false;
         try {
-          mermaid.initialize({ fontFamily: monoFont, fontSize: 14 });
+          const isDark =
+            document.documentElement.getAttribute('data-bs-theme') === 'dark' ||
+            (window.matchMedia &&
+              window.matchMedia('(prefers-color-scheme: dark)').matches);
+          mermaid.initialize({
+            theme: isDark ? 'dark' : 'default',
+            fontFamily: monoFont,
+            fontSize: 14
+          });
           const code = document.querySelector('code.language-mermaid');
           if (code) {
             for (const pre of document.querySelectorAll('pre.mermaid')) {
@@ -51,16 +59,31 @@
         }
       };
 
+      const centerLabels = () => {
+        document
+          .querySelectorAll('.mermaid svg foreignObject div, .mermaid-lightbox-diagram svg foreignObject div')
+          .forEach((div) => {
+            div.style.display = 'flex';
+            div.style.alignItems = 'center';
+            div.style.justifyContent = 'center';
+          });
+      };
+
       const enhance = () =>
         whenRendered(() => {
+          centerLabels();
           lib.cleanupMermaidEnhancements?.();
           lib.enhanceMermaidDiagrams();
         });
 
       const observer = new MutationObserver(() => {
-        enhance();
-        setTimeout(enhance, 600);
-        setTimeout(enhance, 1800);
+        setTimeout(() => {
+          rerenderWithMono().then(() => {
+            enhance();
+            setTimeout(enhance, 600);
+            setTimeout(enhance, 1800);
+          });
+        }, 80);
       });
       observer.observe(document.documentElement, {
         attributes: true,
