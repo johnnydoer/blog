@@ -270,3 +270,36 @@ body .mermaid-lightbox-close:hover {
   background: rgb(190 60 60 / 85%);
   color: #fff;
 }
+
+/* Mermaid labels: match the site's mono headings instead of the library default */
+
+.mermaid-wrapper .mermaid,
+.mermaid-lightbox-diagram,
+.mermaid-wrapper .mermaid svg,
+.mermaid-lightbox-diagram svg {
+  font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 14px;
+}
+
+/* Readability: bump body text from 16.48px to 18px for the serif face */
+
+.content p {
+  font-size: 1.125rem;
+}
+
+/* Opening summary blockquote → callout card */
+
+.content > blockquote {
+  background: var(--card-bg);
+  border: 1px solid var(--main-border-color);
+  border-left: 4px solid var(--link-color);
+  border-radius: 0.5rem;
+  padding: 1rem 1.25rem;
+  color: var(--text-color);
+}
+
+/* Inline code: slightly stronger indigo tint */
+
+.content code:not(pre code) {
+  background: rgb(109 109 158 / 11%);
+}

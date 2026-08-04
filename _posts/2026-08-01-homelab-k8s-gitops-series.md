@@ -5,6 +5,9 @@ categories: [Homelab, Kubernetes]
 tags: [k3s, argocd, cilium, gitops, homelab, kubernetes]
 description: "A complete homelab kubernetes gitops architecture walkthrough: OpenTofu, Proxmox, Ansible, K3s, Cilium, ArgoCD, GitLab CE, cert-manager, Longhorn, OpenBao, ESO, and kube-prometheus-stack."
 mermaid: true
+image:
+  path: /assets/img/posts/homelab-k8s-gitops-series/hero.png
+  alt: "Architecture diagram of a homelab Kubernetes GitOps stack showing all layers from Proxmox VMs to ArgoCD-managed cluster components"
 toc: true
 ---
 
@@ -83,23 +86,21 @@ Here's every layer, what it does, and why it's there.
 ## Architecture Diagram
 
 ```mermaid
-graph TB
-    subgraph "Infra Provisioning"
-        OT["OpenTofu\n(IaC)"]
-        ANS["Ansible\n(OS + K3s + GitLab)"]
+%%{init: {"flowchart": {"nodeSpacing": 25, "rankSpacing": 35}}}%%
+%% Homelab K8s GitOps full-stack architecture: provisioning, infra, and GitOps-managed cluster services
+flowchart TD
+    subgraph "Provisioning"
+        OT["OpenTofu\nIaC"]
+        ANS["Ansible\nOS · K3s · GitLab"]
     end
 
-    subgraph "Hypervisor — 3 Standalone Nodes"
-        PVE["Proxmox PVE2 · PVE3 · PVE4\n(independent user DBs)"]
-    end
-
-    subgraph "GitLab VM — on PVE4"
+    subgraph "Infrastructure"
+        PVE["Proxmox\nPVE2 · PVE3 · PVE4"]
         GL["GitLab CE\ngit · CI · registry · OIDC"]
     end
 
-    subgraph "K8s Cluster — K3s"
-        CP["Control Plane\n(bare-metal laptop)"]
-        W["Workers\n(Proxmox VMs)"]
+    subgraph K8S["K8s Cluster — K3s"]
+        NODES["Nodes\nbare-metal CP + 3 Proxmox workers"]
 
         subgraph "Networking"
             CIL["Cilium\nCNI · kube-proxy replacement\nGateway API · Hubble"]
@@ -107,21 +108,21 @@ graph TB
 
         subgraph "GitOps"
             ARGO["ArgoCD\nApp of Apps"]
-            AIU["ArgoCD\nImage Updater"]
+            AIU["ArgoCD Image Updater"]
         end
 
         subgraph "TLS"
-            CM["cert-manager\nLet's Encrypt · Cloudflare DNS-01"]
-        end
-
-        subgraph "Storage"
-            LH["Longhorn\nreplicated block storage"]
-            NFS["NFS CSI\nOMV NAS"]
+            CM["cert-manager\nLet's Encrypt · Cloudflare dns01"]
         end
 
         subgraph "Secrets"
-            OB["OpenBao\nVault FOSS fork"]
+            OB["OpenBao\nVault fork"]
             ESO["External Secrets Operator"]
+        end
+
+        subgraph "Storage"
+            LH["Longhorn\nreplicated block"]
+            NFS["NFS CSI\nOMV NAS"]
         end
 
         subgraph "Observability"
@@ -129,32 +130,33 @@ graph TB
         end
 
         subgraph "CI/CD"
-            GLR["GitLab Runner\nshell + kubernetes executor"]
-            KAN["Kaniko\nrootless container builds"]
+            GLR["GitLab Runner\nshell + kubernetes"]
+            KAN["Kaniko\nrootless builds"]
         end
     end
 
     OT -->|"provisions VMs"| PVE
-    ANS -->|"bootstraps OS + services"| PVE
-    ANS -->|"installs GitLab CE"| GL
-    ANS -->|"installs K3s"| CP
-    PVE -->|"worker VMs"| W
-    GL -->|"manifests synced by"| ARGO
-    ARGO -->|"manages"| CIL
-    ARGO -->|"manages"| CM
-    ARGO -->|"manages"| LH
-    ARGO -->|"manages"| NFS
-    ARGO -->|"manages"| OB
-    ARGO -->|"manages"| ESO
-    ARGO -->|"manages"| KPS
-    ARGO -->|"manages"| GLR
-    OB -->|"secrets pulled by"| ESO
-    ESO -->|"injects K8s Secrets"| CM
-    ESO -->|"injects K8s Secrets"| ARGO
-    ESO -->|"injects K8s Secrets"| GLR
-    GLR -->|"builds images via"| KAN
-    KAN -->|"pushes to"| GL
-    AIU -->|"commits image tags to"| GL
+    ANS -->|"bootstraps OS"| PVE
+    ANS -->|"installs"| GL
+    ANS -->|"bootstraps K3s"| NODES
+    PVE -->|"worker VMs"| NODES
+    GL -->|"git source"| ARGO
+    ARGO -->|"syncs"| CIL
+    ARGO -->|"syncs"| CM
+    ARGO -->|"syncs"| OB
+    ARGO -->|"syncs"| ESO
+    ARGO -->|"syncs"| KPS
+    ARGO -->|"syncs"| LH
+    ARGO -->|"syncs"| NFS
+    ARGO -->|"syncs"| GLR
+    ARGO -->|"syncs"| AIU
+    OB -->|"provides secrets"| ESO
+    ESO -->|"K8s Secret"| CM
+    ESO -->|"K8s Secret"| ARGO
+    ESO -->|"K8s Secret"| GLR
+    GLR -->|"builds via"| KAN
+    KAN -->|"pushes image"| GL
+    AIU -->|"commits tag"| GL
 ```
 
 ## Proxmox Topology Gotcha
