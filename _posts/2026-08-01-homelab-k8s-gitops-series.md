@@ -8,6 +8,7 @@ image:
   path: /assets/img/posts/homelab-k8s-gitops-series/hero.png
   alt: "Architecture diagram of a homelab Kubernetes GitOps stack showing all layers from Proxmox VMs to ArgoCD-managed cluster components"
 toc: true
+mermaid: true
 ---
 
 > This post is the start of the [Homelab K8s GitOps series](/categories/homelab/). Jump directly to any post using the roadmap table below.
