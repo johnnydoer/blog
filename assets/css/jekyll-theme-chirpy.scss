@@ -2,9 +2,7 @@
 ---
 
 @use 'abstracts/variables' with (
-  $theme: '{{ site.theme_mode }}',
-  $font-family-base: ('Source Serif 4', 'Source Serif Pro', Georgia, 'Times New Roman', serif),
-  $font-family-heading: ('JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace)
+  $theme: '{{ site.theme_mode }}'
 );
 
 /* prettier-ignore */
@@ -157,17 +155,6 @@
   }
 }
 
-/* JetBrains Mono for elements where the theme hardcodes Lato/Oswald */
-
-code,
-kbd,
-pre,
-.tag span,
-.pagination,
-#archives .date.day {
-  font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-}
-
 /* Homepage hero */
 
 .home-hero {
@@ -183,7 +170,6 @@ pre,
 }
 
 .home-hero-title {
-  font-family: 'JetBrains Mono', monospace;
   font-size: 2rem;
   font-weight: 700;
   color: var(--heading-color);
@@ -318,7 +304,7 @@ body .mermaid-lightbox-close:hover {
 .mermaid-lightbox-diagram svg p,
 .mermaid-lightbox-diagram svg span,
 .mermaid-lightbox-diagram svg .nodeLabel {
-  font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace !important;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace !important;
   font-size: 14px !important;
 }
 
@@ -333,12 +319,6 @@ body .mermaid-lightbox-close:hover {
   content: '\f00d';
   font-size: 0.9rem;
   line-height: 1;
-}
-
-/* Readability: bump body text from 16.48px to 18px for the serif face */
-
-.content p {
-  font-size: 1.125rem;
 }
 
 /* Opening summary blockquote → callout card */

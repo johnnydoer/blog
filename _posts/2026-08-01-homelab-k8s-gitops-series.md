@@ -4,7 +4,6 @@ date: 2026-08-01
 categories: [Homelab, Kubernetes]
 tags: [k3s, argocd, cilium, gitops, homelab, kubernetes]
 description: "A complete homelab kubernetes gitops architecture walkthrough: OpenTofu, Proxmox, Ansible, K3s, Cilium, ArgoCD, GitLab CE, cert-manager, Longhorn, OpenBao, ESO, and kube-prometheus-stack."
-mermaid: true
 image:
   path: /assets/img/posts/homelab-k8s-gitops-series/hero.png
   alt: "Architecture diagram of a homelab Kubernetes GitOps stack showing all layers from Proxmox VMs to ArgoCD-managed cluster components"
@@ -35,19 +34,25 @@ GitOps fixes this with one rule: if it's not in git, it doesn't exist. Every com
 
 The setup cost is real — this is a full 14-post series, not a weekend project. The payoff is a cluster that's reproducible from scratch and a git log that tells the story of every decision.
 
-## Why K3s
+## Why K3s + Cilium
 
-K3s is a single binary that runs a production-grade Kubernetes cluster with embedded etcd. I chose it over kubeadm for two reasons.
+K3s and Cilium are a deliberate pairing, not independent choices.
+
+I chose K3s over kubeadm for two reasons.
 
 First, embedded etcd eliminates an external dependency. With kubeadm, you need to manage etcd separately — either as a systemd service or as static pods with their own storage, backup, and restore procedures. K3s manages etcd internally. It snapshots automatically and the snapshot restore procedure is one command.
 
 Second, single binary means single upgrade path. `systemctl stop k3s` + replace the binary + `systemctl start k3s`. Done. There is no kubeadm upgrade dance with `kubeadm upgrade plan` and `kubeadm upgrade apply` and "do this on every node in the right order."
 
-The tradeoff: K3s comes with Flannel and Traefik enabled by default, and both must be disabled before Cilium will work correctly. I installed K3s with `--disable traefik --disable servicelb --disable-kube-proxy` from the start. If kube-proxy is already running when you try to install Cilium in full replacement mode, you will have a bad afternoon.
+I chose Cilium over Flannel because it does more than route packets. It is the only CNI that implements the Kubernetes Gateway API natively — no Nginx, no Traefik, no separate ingress controller needed. Cilium handles L4/L7 routing, NetworkPolicy enforcement, load balancer IP assignment, and network observability via Hubble, all from one Helm chart. It replaces kube-proxy using eBPF, which gives you per-connection observability and better node-level networking performance than iptables-based routing.
+
+Cilium is not a homelab curiosity. Datadog and Adobe run it in production. It is what large platform engineering organizations reach for when they need CNI, Gateway API, and network observability from one tool. Learning it in a homelab means learning the same thing production platform teams are running.
+
+The K3s and Cilium pairing has one non-obvious requirement: K3s must start with `--disable traefik --disable servicelb --disable-kube-proxy` set before Cilium is installed. If kube-proxy is already running when Cilium tries to take full replacement mode, you will have a bad afternoon of non-deterministic routing failures. I cover this in detail in Post #2 and Post #3.
 
 ## Why Self-Hosted
 
-Cloud Kubernetes costs money. A managed three-node cluster on any major cloud provider runs $200–$400 per month before storage, egress, or load balancers. My homelab runs on hardware I already own, consumes electricity I'm already paying, and sits behind a home router I'm already managing. The marginal cost of the cluster itself is near zero.
+Cloud Kubernetes costs money. A managed three-node cluster on any major cloud provider runs $200–$400 per month before storage, egress, or load balancers. My homelab runs on hardware I already own, consumes electricity I'm already paying (all 4 Proxmox nodes are already always on for my other workloads), and sits behind a home router I'm already managing. The marginal cost of the cluster itself is near zero.
 
 Beyond cost, there's the learning argument. When EKS or GKE hides the control plane from you, you don't learn how the control plane works. You learn how to configure managed add-ons. Running K3s on bare metal and VMs means I've debugged etcd health, traced CNI initialization order issues, and written my own Ansible roles for cluster bootstrap. That knowledge transfers. Cloud abstractions don't.
 
@@ -102,7 +107,7 @@ flowchart TD
         NODES["Nodes\nbare-metal CP + 3 Proxmox workers"]
 
         subgraph "Networking"
-            CIL(("Cilium\nCNI · Gateway API · Hubble"))
+            CIL{{"Cilium\nCNI · Gateway API · Hubble"}}
         end
 
         subgraph "GitOps"
@@ -213,7 +218,7 @@ provider "proxmox" {
 }
 ```
 
-If you have a clustered Proxmox setup, you can skip the multi-provider configuration. One provider block and one token work across all nodes. I'll note this distinction again in Post #1. The full walkthrough — provider aliases, GitLab HTTP backend, cloud-init SSH injection — is in [Proxmox VM Provisioning with OpenTofu](/posts/proxmox-opentofu-vm-provisioning/).
+If you have a clustered Proxmox setup, you can skip the multi-provider configuration. One provider block and one token work across all nodes. I'll note this distinction again in Post #1.
 
 ## Series Roadmap
 
