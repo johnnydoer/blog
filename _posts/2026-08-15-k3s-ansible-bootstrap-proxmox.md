@@ -44,8 +44,8 @@ The playbook runs four plays in sequence against the `hosts.ini` inventory. The 
   [data-bs-theme='dark'] .k3s-arch-d { display: block; }
 </style>
 <figure>
-  <img class="k3s-arch-l" src="/assets/img/posts/k3s-ansible-bootstrap-proxmox/hero.png" alt="K3s Ansible bootstrap architecture — four plays, embedded etcd, Proxmox workers">
-  <img class="k3s-arch-d" src="/assets/img/posts/k3s-ansible-bootstrap-proxmox/hero-dark.png" alt="K3s Ansible bootstrap architecture — four plays, embedded etcd, Proxmox workers">
+  <img class="k3s-arch-l themed-hero" src="/assets/img/posts/k3s-ansible-bootstrap-proxmox/hero.png" alt="K3s Ansible bootstrap architecture — four plays, embedded etcd, Proxmox workers">
+  <img class="k3s-arch-d themed-hero" src="/assets/img/posts/k3s-ansible-bootstrap-proxmox/hero-dark.png" alt="K3s Ansible bootstrap architecture — four plays, embedded etcd, Proxmox workers">
 </figure>
 
 The token flow is worth noting. K3s writes a join token to `/var/lib/rancher/k3s/server/node-token` when the server starts. Ansible reads that file from the control plane with `slurp`, base64-decodes it, and sets it as a host fact before the worker play runs. Workers pull the token live from the running server rather than from Vault, which keeps the secret out of any variable file entirely.

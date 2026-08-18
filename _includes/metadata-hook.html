@@ -3,6 +3,30 @@
   Interactive Mermaid: pan/zoom, fullscreen lightbox, PNG/SVG export.
   Chirpy renders the diagrams itself; this adds pan/zoom + controls on top.
 -->
+<script>
+  /* Swap hero.png ↔ hero-dark.png on Chirpy theme toggle.
+     Skips images already inside a CSS-controlled figure (class .themed-hero). */
+  (function () {
+    var SEL = 'img[src*="/hero.png"]:not(.themed-hero), img[src*="/hero-dark.png"]:not(.themed-hero)';
+    function sync() {
+      var dark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+      document.querySelectorAll(SEL).forEach(function (img) {
+        img.src = dark
+          ? img.src.replace(/\/hero\.png(\b|$)/, '/hero-dark.png')
+          : img.src.replace(/\/hero-dark\.png(\b|$)/, '/hero.png');
+      });
+    }
+    new MutationObserver(sync).observe(document.documentElement, {
+      attributes: true, attributeFilter: ['data-bs-theme']
+    });
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', sync);
+    } else {
+      sync();
+    }
+  })();
+</script>
+
 {% if page.mermaid %}
   <link rel="stylesheet" href="https://unpkg.com/@mostlylucid/mermaid-enhancements@1.0.0/src/styles.css">
   <script type="module">
