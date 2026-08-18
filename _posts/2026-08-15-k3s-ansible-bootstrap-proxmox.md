@@ -37,26 +37,16 @@ I chose Ansible over bash scripts for three reasons. First, idempotency: I can r
 
 The playbook runs four plays in sequence against the `hosts.ini` inventory. The common OS role runs first on every K3s node. The K3s server role runs next on the control plane only, waits for the API server to be ready, then the worker play joins all three Proxmox VMs using the token read from the control plane. A final play distributes the kubeconfig to the GitLab VM so the CI shell runner can talk to the cluster.
 
-```mermaid
-flowchart TD
-    AC["Ansible Controller"] -->|ansible-playbook| PB["k3s-bootstrap.yml"]
-
-    PB --> P1["Play 1: common role\nall k3s_all nodes"]
-    PB --> P2["Play 2: k3s server role\ncontrol plane only"]
-    PB --> P3["Play 3: k3s agent role\nworkers"]
-    PB --> P4["Play 4: distribute kubeconfig\nto GitLab VM"]
-
-    P2 --> CP["k8s-cp 172.16.15.11\nbare metal Ubuntu 24.04\nembedded etcd cluster-init"]
-    P3 --> W1["k8s-worker-1 172.16.15.12\nPVE4 - role=storage label"]
-    P3 --> W2["k8s-worker-2 172.16.15.13\nPVE2 - unreliable taint"]
-    P3 --> W3["k8s-worker-3 172.16.15.14\nPVE3 - unreliable taint"]
-
-    CP -->|"slurp node-token\nset_fact k3s_token"| W1
-    CP --> W2
-    CP --> W3
-
-    P4 --> GL["GitLab VM 172.16.15.10\nkubeconfig for gitlab-runner"]
-```
+<style>
+  .k3s-arch-l { display: block; }
+  .k3s-arch-d { display: none; }
+  [data-bs-theme='dark'] .k3s-arch-l { display: none; }
+  [data-bs-theme='dark'] .k3s-arch-d { display: block; }
+</style>
+<figure>
+  <img class="k3s-arch-l" src="/assets/img/posts/k3s-ansible-bootstrap-proxmox/hero.png" alt="K3s Ansible bootstrap architecture — four plays, embedded etcd, Proxmox workers">
+  <img class="k3s-arch-d" src="/assets/img/posts/k3s-ansible-bootstrap-proxmox/hero-dark.png" alt="K3s Ansible bootstrap architecture — four plays, embedded etcd, Proxmox workers">
+</figure>
 
 The token flow is worth noting. K3s writes a join token to `/var/lib/rancher/k3s/server/node-token` when the server starts. Ansible reads that file from the control plane with `slurp`, base64-decodes it, and sets it as a host fact before the worker play runs. Workers pull the token live from the running server rather than from Vault, which keeps the secret out of any variable file entirely.
 
