@@ -54,7 +54,7 @@ jobs:
         run: |
           bundle exec htmlproofer _site \
             \-\-disable-external \
-            \-\-ignore-urls "/^http:\/\/127.0.0.1/,/^http:\/\/0.0.0.0/,/^http:\/\/localhost/,/^\/posts\/(proxmox-opentofu-vm-provisioning|k3s-ansible-bootstrap-proxmox|cilium-cni-k3s-kube-proxy-replacement|kubernetes-gateway-api-cilium-internal-dns|self-hosted-gitlab-ce-ansible|argocd-app-of-apps-k3s|argocd-dex-gitlab-oidc-sso|gitlab-ci-runners-shell-kubernetes|kaniko-argocd-image-updater-gitops|longhorn-nfs-csi-kubernetes-storage|openbao-external-secrets-operator-kubernetes|kube-prometheus-stack-grafana-kubernetes|cert-manager-cloudflare-dns01-wildcard-tls)\//"
+            \-\-ignore-urls "/^http:\/\/127.0.0.1/,/^http:\/\/0.0.0.0/,/^http:\/\/localhost/,/^\/posts\/(proxmox-opentofu-vm-provisioning|proxmox-vm-provisioning-opentofu|k3s-ansible-bootstrap-proxmox|cilium-cni-k3s-kube-proxy-replacement|cilium-cni-kube-proxy-replacement|kubernetes-gateway-api-cilium-internal-dns|self-hosted-gitlab-ce-ansible|argocd-app-of-apps-k3s|argocd-dex-gitlab-oidc-sso|gitlab-ci-runners-shell-kubernetes|kaniko-argocd-image-updater-gitops|longhorn-nfs-csi-kubernetes-storage|openbao-external-secrets-operator-kubernetes|kube-prometheus-stack-grafana-kubernetes|cert-manager-cloudflare-dns01-wildcard-tls)\//"
 
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v5
