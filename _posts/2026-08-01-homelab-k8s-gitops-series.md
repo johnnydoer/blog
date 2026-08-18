@@ -11,6 +11,17 @@ toc: true
 mermaid: true
 ---
 
+<style>
+  .post-content {
+    --content-max-width: 100vw;
+    overflow-x: auto;
+  }
+  .post-content img {
+    max-width: 100%;
+    width: auto;
+  }
+</style>
+
 > This post is the start of the [Homelab K8s GitOps series](/categories/homelab/). Jump directly to any post using the roadmap table below.
 
 ## TL;DR
