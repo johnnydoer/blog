@@ -321,11 +321,12 @@ body .mermaid-lightbox-close:hover {
   line-height: 1;
 }
 
-/* Themed border on all post images — hero + body content */
+/* Themed border on all post images — hero, card thumbnails, body content */
 
 img.preview-img,
+.post-preview img,
 .content img:not([class*='emoji']):not([class*='icon']) {
-  border: 1px solid var(--kbd-wrap-color);
+  border: 2px solid var(--kbd-wrap-color);
   border-radius: 0.375rem;
 }
 
