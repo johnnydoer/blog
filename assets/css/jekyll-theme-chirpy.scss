@@ -323,9 +323,9 @@ body .mermaid-lightbox-close:hover {
 
 /* Themed border on all post images — hero + body content */
 
-img.preview-img {
+.preview-img {
   box-shadow: 0 0 0 2px var(--kbd-wrap-color);
-  border-radius: 0.375rem;
+  border-radius: 0.5rem;
 }
 
 .content img:not([class*='emoji']):not([class*='icon']) {
