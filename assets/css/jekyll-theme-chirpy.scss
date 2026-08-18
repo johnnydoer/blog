@@ -321,13 +321,15 @@ body .mermaid-lightbox-close:hover {
   line-height: 1;
 }
 
-/* Themed border on all post images — hero + body content.
-   Inset box-shadow instead of border: avoids layout shift on width:100% images
-   and can't be clipped by parent overflow. */
+/* Themed border on all post images — hero + body content */
 
-img.preview-img,
+img.preview-img {
+  box-shadow: 0 0 0 2px var(--kbd-wrap-color);
+  border-radius: 0.375rem;
+}
+
 .content img:not([class*='emoji']):not([class*='icon']) {
-  box-shadow: inset 0 0 0 2px var(--kbd-wrap-color);
+  border: 2px solid var(--kbd-wrap-color);
   border-radius: 0.375rem;
 }
 
