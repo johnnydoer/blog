@@ -321,6 +321,18 @@ body .mermaid-lightbox-close:hover {
   line-height: 1;
 }
 
+/* Themed border on all post images — hero + body content */
+
+img.preview-img {
+  border: 1px solid var(--main-border-color);
+  border-radius: 0.375rem;
+}
+
+.content img:not([class*='emoji']):not([class*='icon']) {
+  border: 1px solid var(--main-border-color);
+  border-radius: 0.375rem;
+}
+
 /* Opening summary blockquote → callout card */
 
 .content > blockquote {
