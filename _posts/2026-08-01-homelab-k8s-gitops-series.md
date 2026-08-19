@@ -6,7 +6,7 @@ tags: [k3s, argocd, cilium, gitops, homelab, kubernetes]
 description: "A complete homelab kubernetes gitops architecture walkthrough: OpenTofu, Proxmox, Ansible, K3s, Cilium, ArgoCD, GitLab CE, cert-manager, Longhorn, OpenBao, ESO, and kube-prometheus-stack."
 image:
   path: /assets/img/posts/homelab-k8s-gitops-series/hero.png
-  alt: "Architecture diagram of a homelab Kubernetes GitOps stack showing all layers from Proxmox VMs to ArgoCD-managed cluster components"
+  alt: "Architecture overview of the homelab Kubernetes GitOps stack: OpenTofu, Ansible, Proxmox, GitLab CE, K3s, Cilium, ArgoCD, cert-manager, OpenBao, Longhorn, and kube-prometheus-stack"
 toc: true
 mermaid: true
 ---

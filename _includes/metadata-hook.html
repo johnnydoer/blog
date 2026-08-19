@@ -5,7 +5,10 @@
 -->
 <script>
   /* Swap hero.png ↔ hero-dark.png on Chirpy theme toggle.
-     Skips images already inside a CSS-controlled figure (class .themed-hero). */
+     Skips images already inside a CSS-controlled figure (class .themed-hero).
+     Lightbox fix: GLightbox caches hrefs at init and ignores later DOM changes.
+     A capture-phase click handler intercepts only hero popup anchors and opens
+     a fresh GLightbox instance with the correctly themed URL. */
   (function () {
     var SEL = 'img[src*="/hero.png"]:not(.themed-hero), img[src*="/hero-dark.png"]:not(.themed-hero)';
     function sync() {
@@ -24,6 +27,27 @@
     } else {
       sync();
     }
+
+    // Intercept hero-image popup clicks before GLightbox uses its cached href.
+    // Only targets anchors with class popup/img-link whose href contains /hero.png
+    // or /hero-dark.png — leaves all other links (including homepage card links) alone.
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('a.popup, a.img-link');
+      if (!a) return;
+      var raw = a.getAttribute('href') || '';
+      if (!raw.match(/\/hero(|-dark)\.png/)) return;
+      var dark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+      var url = dark
+        ? raw.replace(/\/hero\.png(\b|$)/, '/hero-dark.png')
+        : raw.replace(/\/hero-dark\.png(\b|$)/, '/hero.png');
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      if (typeof GLightbox !== 'undefined') {
+        GLightbox({ elements: [{ href: url, type: 'image' }] }).open();
+      } else {
+        window.open(url, '_blank');
+      }
+    }, true);
   })();
 </script>
 
