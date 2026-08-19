@@ -11,8 +11,15 @@
      a fresh GLightbox instance with the correctly themed URL. */
   (function () {
     var SEL = 'img[src*="/hero.png"]:not(.themed-hero), img[src*="/hero-dark.png"]:not(.themed-hero)';
+    function isDark() {
+      var attr = document.documentElement.getAttribute('data-bs-theme');
+      if (attr === 'dark') return true;
+      if (attr === 'light') return false;
+      // No explicit toggle — fall back to system preference
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
     function sync() {
-      var dark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+      var dark = isDark();
       document.querySelectorAll(SEL).forEach(function (img) {
         img.src = dark
           ? img.src.replace(/\/hero\.png(\b|$)/, '/hero-dark.png')
@@ -22,6 +29,9 @@
     new MutationObserver(sync).observe(document.documentElement, {
       attributes: true, attributeFilter: ['data-bs-theme']
     });
+    if (window.matchMedia) {
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', sync);
+    }
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', sync);
     } else {
@@ -36,7 +46,7 @@
       if (!a) return;
       var raw = a.getAttribute('href') || '';
       if (!raw.match(/\/hero(|-dark)\.png/)) return;
-      var dark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+      var dark = isDark();
       var url = dark
         ? raw.replace(/\/hero\.png(\b|$)/, '/hero-dark.png')
         : raw.replace(/\/hero-dark\.png(\b|$)/, '/hero.png');
