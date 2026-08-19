@@ -323,7 +323,7 @@ body .mermaid-lightbox-close:hover {
 
 /* Themed border on all post images — hero + body content */
 
-.preview-img {
+article.px-1 .preview-img {
   box-shadow: 0 0 0 2px var(--kbd-wrap-color);
   border-radius: 0.5rem;
 }
