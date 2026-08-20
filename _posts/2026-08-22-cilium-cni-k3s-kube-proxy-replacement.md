@@ -48,21 +48,16 @@ The alternative I considered was Calico. Calico has NetworkPolicy support and is
 
 Each K3s node runs a Cilium Agent pod as part of a DaemonSet. The agent compiles eBPF programs and loads them into the kernel, replacing the iptables rules that kube-proxy would otherwise manage. At the cluster level, the Cilium Operator runs the Gateway API controller (once the CRDs are present) and Hubble Relay aggregates per-flow data from all node agents. The Gateway API controller registers a GatewayClass named `cilium` and watches for Gateway and HTTPRoute resources.
 
-```mermaid
-flowchart TD
-    subgraph Node["K3s Node (each)"]
-        KP["kube-proxy\ndisabled at install"]
-        CA["Cilium Agent\nDaemonSet pod"]
-        eBPF["eBPF Programs\nkernel dataplane"]
-        CA -->|"compiles and loads"| eBPF
-    end
-
-    CA -->|"kubeProxyReplacement: true\nk8sServiceHost: 172.16.15.11"| OP["Cilium Operator"]
-    OP --> GWC["Gateway API Controller\ngatewayAPI.enabled: true"]
-    CA -->|"hubble.relay.enabled: true"| HR["Hubble Relay"]
-    HR -->|"hubble.ui.enabled: true"| HUI["Hubble UI"]
-    GWC --> GW["Gateway\nLB IP: 172.16.15.100\ngatewayClassName: cilium"]
-```
+<style>
+  .cilium-arch-l { display: block; }
+  .cilium-arch-d { display: none; }
+  [data-bs-theme='dark'] .cilium-arch-l { display: none; }
+  [data-bs-theme='dark'] .cilium-arch-d { display: block; }
+</style>
+<figure>
+  <img class="cilium-arch-l themed-hero" src="/assets/img/posts/cilium-cni-k3s-kube-proxy-replacement/hero.png" alt="Cilium CNI architecture — Cilium Agent DaemonSet replacing kube-proxy with eBPF, Cilium Operator with Gateway API Controller, Hubble observability stack, and Gateway at 172.16.15.100">
+  <img class="cilium-arch-d themed-hero" src="/assets/img/posts/cilium-cni-k3s-kube-proxy-replacement/hero-dark.png" alt="Cilium CNI architecture — Cilium Agent DaemonSet replacing kube-proxy with eBPF, Cilium Operator with Gateway API Controller, Hubble observability stack, and Gateway at 172.16.15.100">
+</figure>
 
 The `kubeProxyReplacement: true` flag tells Cilium to own all service routing that kube-proxy would otherwise handle. Cilium needs to know the API server address to do this correctly, which is why `k8sServiceHost` and `k8sServicePort` are required on K3s specifically. K3s doesn't expose the API server address through the standard cluster DNS path that Cilium uses on kubeadm clusters, so the control plane IP goes in directly.
 
