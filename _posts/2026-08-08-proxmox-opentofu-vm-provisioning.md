@@ -8,7 +8,6 @@ image:
   path: /assets/img/posts/proxmox-opentofu-vm-provisioning/hero.png
   alt: "OpenTofu CLI provisioning Proxmox VMs across three standalone nodes using provider aliases"
 toc: true
-mermaid: true
 ---
 
 > This post is part of the [Homelab K8s GitOps series](/categories/homelab/). Start with the [architecture overview](/posts/homelab-k8s-gitops-series/) or jump in anywhere.
@@ -39,43 +38,18 @@ For state, I used GitLab's built-in HTTP backend. This gives me remote state wit
 
 The OpenTofu config connects directly to each Proxmox node's API endpoint. Each node runs its own API server, and since the nodes are standalone (not clustered), each has its own user database and token store. The diagram shows why a single provider block doesn't work here.
 
-```mermaid
-%% OpenTofu provisioning: CLI against GitLab state backend and per-node Proxmox provider aliases
-flowchart LR
-    subgraph "Control"
-        CLI["OpenTofu CLI\n(local / GitLab CI)"]
-    end
-
-    subgraph "State"
-        STATE["GitLab HTTP Backend\n(Terraform state)"]
-    end
-
-    subgraph "Standalone Nodes — PVE"
-        PVE4["PVE4 API :8006\n→ VM k8s-worker-1\n→ VM gitlab"]
-        PVE2["PVE2 API :8006\n→ VM k8s-worker-2"]
-        PVE3["PVE3 API :8006\n→ VM k8s-worker-3"]
-    end
-
-    CLI -->|"tofu init/apply"| STATE
-    CLI -->|"provider proxmox\n(default)"| PVE4
-    CLI -->|"provider proxmox.pve2\n(alias)"| PVE2
-    CLI -->|"provider proxmox.pve3\n(alias)"| PVE3
-
-    classDef cli   fill:#1e293b,stroke:#38bdf8,color:#f8fafc,stroke-width:2px
-    classDef state fill:#0f172a,stroke:#818cf8,color:#f8fafc,stroke-width:2px
-    classDef pve   fill:#334155,stroke:#cbd5e1,color:#f8fafc,stroke-width:2px
-
-    class CLI cli
-    class STATE state
-    class PVE4,PVE2,PVE3 pve
-
-    %% 0: state sync; 1-3: per-node provider aliases
-    linkStyle 0 stroke:#fb923c,stroke-width:2px
-    linkStyle 1,2,3 stroke:#94a3b8,stroke-width:2px
-```
+<style>
+  .otf-arch-l { display: block; }
+  .otf-arch-d { display: none; }
+  [data-bs-theme='dark'] .otf-arch-l { display: none; }
+  [data-bs-theme='dark'] .otf-arch-d { display: block; }
+</style>
+<figure>
+  <img class="otf-arch-l themed-hero" src="/assets/img/posts/proxmox-opentofu-vm-provisioning/hero.png" alt="OpenTofu provisioning architecture — CLI connecting to 3 standalone PVE nodes via provider aliases, with state in GitLab HTTP backend">
+  <img class="otf-arch-d themed-hero" src="/assets/img/posts/proxmox-opentofu-vm-provisioning/hero-dark.png" alt="OpenTofu provisioning architecture — CLI connecting to 3 standalone PVE nodes via provider aliases, with state in GitLab HTTP backend">
+</figure>
 
 Each provider alias holds its own endpoint and API token. When OpenTofu runs `proxmox_virtual_environment_vm.k8s_worker_2`, it uses the `proxmox.pve2` alias — which connects directly to PVE2's API and clones the template that lives on PVE2. No cross-node communication, no routing through PVE4.
-
 ## Prerequisites
 
 - Proxmox API token created on each node (PVE4 for Phase 0, PVE2 and PVE3 for Phase 1 — see steps below)
