@@ -288,4 +288,4 @@ Next up: [Gateway API + Internal DNS](/posts/kubernetes-gateway-api-cilium-inter
 **Related posts:**
 
 - [K3s Bootstrap with Ansible](/posts/k3s-ansible-bootstrap-proxmox/) — the K3s install configuration that Cilium depends on, including the `--disable-kube-proxy` flag that must be set before Cilium goes in
-- [ArgoCD + App of Apps](/posts/argocd-app-of-apps/) — how the rest of the stack is deployed declaratively once Cilium's Gateway is handling ingress routing
+- [ArgoCD + App of Apps](/posts/argocd-app-of-apps-k3s/) — how the rest of the stack is deployed declaratively once Cilium's Gateway is handling ingress routing
