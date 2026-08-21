@@ -142,22 +142,22 @@ If you have a clustered Proxmox setup, you can skip the multi-provider configura
 
 All 14 posts in the series. Linked titles are live.
 
-| Week | Post | Title |
-|------|------|-------|
-| 1 | Overview | Homelab Kubernetes GitOps — Full Stack Architecture Overview *(this post)* |
-| 2 | 1 | [Proxmox VM Provisioning with OpenTofu — Standalone Node Gotchas](/posts/proxmox-opentofu-vm-provisioning/) |
-| 3 | 2 | [K3s Bootstrap with Ansible on Proxmox — Embedded etcd, No External Dependencies](/posts/k3s-ansible-bootstrap-proxmox/) |
-| 4 | 3 | [Replacing kube-proxy with Cilium on K3s — Full eBPF Networking](/posts/cilium-cni-k3s-kube-proxy-replacement/) |
-| 5 | 4 | Kubernetes Gateway API on K3s with Cilium — Internal DNS via OPNsense and dnsmasq |
-| 6 | 5 | Self-Hosted GitLab CE with Ansible — Git, CI, Registry, and OIDC in One Box |
-| 7 | 6 | ArgoCD App of Apps on K3s — Bootstrap the Whole Cluster from One Helm Install |
-| 8 | 7 | ArgoCD SSO with Dex and GitLab OIDC — Why Built-in OIDC Config Fails with GitLab |
-| 9 | 8 | GitLab CI Runners — Shell Runner for Bootstrap, Kubernetes Runner for Production |
-| 10 | 9 | Rootless Container Builds in Kubernetes with Kaniko and ArgoCD Image Updater |
-| 11 | 10 | Kubernetes Persistent Storage with Longhorn and NFS CSI — Two Storage Classes, Two Use Cases |
-| 12 | 11 | Kubernetes Secrets Management with OpenBao and External Secrets Operator |
-| 13 | 12 | Full Kubernetes Observability with kube-prometheus-stack, Grafana, and Alertmanager |
-| 14 | 13 | Wildcard TLS Certificates with cert-manager and Cloudflare DNS-01 — No Exposed Ports Required |
+| Week | Title |
+|------|-------|
+| 1 | Homelab Kubernetes GitOps — Full Stack Architecture Overview *(this post)* |
+| 2 | [Proxmox VM Provisioning with OpenTofu — Standalone Node Gotchas](/posts/proxmox-opentofu-vm-provisioning/) |
+| 3 | [K3s Bootstrap with Ansible on Proxmox — Embedded etcd, No External Dependencies](/posts/k3s-ansible-bootstrap-proxmox/) |
+| 4 | [Replacing kube-proxy with Cilium on K3s — Full eBPF Networking](/posts/cilium-cni-k3s-kube-proxy-replacement/) |
+| 5 | Kubernetes Gateway API on K3s with Cilium — Internal DNS via OPNsense and dnsmasq |
+| 6 | Self-Hosted GitLab CE with Ansible — Git, CI, Registry, and OIDC in One Box |
+| 7 | ArgoCD App of Apps on K3s — Bootstrap the Whole Cluster from One Helm Install |
+| 8 | ArgoCD SSO with Dex and GitLab OIDC — Why Built-in OIDC Config Fails with GitLab |
+| 9 | GitLab CI Runners — Shell Runner for Bootstrap, Kubernetes Runner for Production |
+| 10 | Rootless Container Builds in Kubernetes with Kaniko and ArgoCD Image Updater |
+| 11 | Kubernetes Persistent Storage with Longhorn and NFS CSI — Two Storage Classes, Two Use Cases |
+| 12 | Kubernetes Secrets Management with OpenBao and External Secrets Operator |
+| 13 | Full Kubernetes Observability with kube-prometheus-stack, Grafana, and Alertmanager |
+| 14 | Wildcard TLS Certificates with cert-manager and Cloudflare DNS-01 — No Exposed Ports Required |
 
 Each post is standalone. If you're here for one specific component, jump directly to it. The series is ordered so that dependencies are covered before they're needed, but every post explains its own prerequisites.
 
